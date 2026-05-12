@@ -92,3 +92,34 @@ firebase.json      Firebase + emulator config
 Deployed on [Railway](https://railway.app). Push to `main` triggers an automatic deploy via GitHub Actions.
 
 Required environment variables in Railway match `.env.local.example`.
+
+### Firebase deploy commands
+
+Deploy Firestore security rules to production:
+```bash
+firebase deploy --only firestore:rules
+```
+
+Deploy Firestore indexes to production:
+```bash
+firebase deploy --only firestore:indexes
+```
+
+These always target the live project (from `.firebaserc`) regardless of local emulator env vars.
+
+### Seeding production Firestore
+
+To seed the question bank against the live project, temporarily disable the emulator vars in `.env.local`:
+
+```
+NEXT_PUBLIC_USE_FIREBASE_EMULATOR=false
+# FIRESTORE_EMULATOR_HOST=localhost:8080
+# FIREBASE_AUTH_EMULATOR_HOST=localhost:9099
+```
+
+Make sure `FIREBASE_ADMIN_SERVICE_ACCOUNT` is set, then run:
+```bash
+npm run seed
+```
+
+Restore the emulator vars when done.
