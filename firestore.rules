@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users can only read/write their own profile
+    match /users/{userId} {
+      allow read, write: if request.auth.uid == userId;
+    }
+
+    // Questions — anyone authenticated can read or create
+    match /questions/{questionId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.suggestedBy == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // Sessions — players in the session can read/write
+    match /sessions/{sessionCode} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if request.auth.uid in resource.data.players
+        || resource.data.players.size() < 2;
+
+      match /history/{questionId} {
+        allow read: if request.auth != null;
+        allow create: if request.auth.uid in get(/databases/$(database)/documents/sessions/$(sessionCode)).data.players;
+      }
+    }
+  }
+}
