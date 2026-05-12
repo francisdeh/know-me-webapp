@@ -90,7 +90,7 @@ export default function HomePage() {
 
 	if (view === "create") {
 		return (
-			<div className="flex flex-col pb-24 px-4 pt-6">
+			<div className="flex flex-col pb-24 md:pb-8 px-4 pt-6">
 				<button
 					type="button"
 					onClick={() => setView("home")}
@@ -248,7 +248,7 @@ export default function HomePage() {
 
 	if (view === "join") {
 		return (
-			<div className="flex flex-col pb-24 px-4 pt-6">
+			<div className="flex flex-col pb-24 md:pb-8 px-4 pt-6">
 				<button
 					type="button"
 					onClick={() => setView("home")}
@@ -288,7 +288,7 @@ export default function HomePage() {
 	}
 
 	return (
-		<div className="flex flex-col pb-24 px-4 pt-8">
+		<div className="flex flex-col pb-24 md:pb-8 px-4 pt-8">
 			{/* Header */}
 			<Link href="/profile" className="mb-8 flex items-center gap-3 active:opacity-70">
 				<PlayerAvatar

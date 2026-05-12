@@ -18,7 +18,7 @@ export function BottomNav() {
 	if (pathname.startsWith("/session/")) return null;
 
 	return (
-		<nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-100 bg-white dark:border-white/10 dark:bg-violet-950">
+		<nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-100 bg-white dark:border-white/10 dark:bg-violet-950 md:hidden">
 			<div className="flex items-center justify-around px-2 pt-2 pb-safe">
 				{NAV_ITEMS.map(({ href, label, icon: Icon }) => {
 					const active = pathname === href || pathname.startsWith(`${href}/`);

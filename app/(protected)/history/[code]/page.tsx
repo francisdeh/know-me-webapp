@@ -56,7 +56,7 @@ export default function HistoryDetailPage() {
 	});
 
 	return (
-		<div className="flex flex-col pb-20 px-4 pt-4 gap-5">
+		<div className="flex flex-col pb-20 md:pb-8 px-4 pt-4 gap-5">
 			<button
 				type="button"
 				onClick={() => router.back()}

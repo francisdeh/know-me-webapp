@@ -19,7 +19,7 @@ export default function HistoryPage() {
 	const { sessions, loading } = useUserSessions(user?.uid ?? null);
 
 	return (
-		<div className="flex flex-col pb-20 px-4 pt-6">
+		<div className="flex flex-col pb-20 md:pb-8 px-4 pt-6">
 			<h1 className="mb-1 text-2xl font-bold text-gray-900 dark:text-white">History</h1>
 			<p className="mb-6 text-sm text-gray-500 dark:text-lavender">Your completed sessions.</p>
 

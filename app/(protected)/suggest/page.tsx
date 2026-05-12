@@ -45,7 +45,7 @@ export default function SuggestPage() {
 	}
 
 	return (
-		<div className="flex flex-col pb-20 px-4 pt-6">
+		<div className="flex flex-col pb-20 md:pb-8 px-4 pt-6">
 			<h1 className="mb-1 text-2xl font-bold text-gray-900 dark:text-white">Suggest a Question</h1>
 			<p className="mb-6 text-sm text-gray-500 dark:text-lavender">
 				Your question goes live immediately for everyone to use.

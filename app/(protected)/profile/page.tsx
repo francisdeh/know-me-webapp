@@ -52,7 +52,7 @@ export default function ProfilePage() {
 	}
 
 	return (
-		<div className="flex flex-col px-4 pt-8 pb-24">
+		<div className="flex flex-col px-4 pt-8 pb-24 md:pb-8">
 			<h1 className="mb-8 text-2xl font-bold text-gray-900 dark:text-white">Profile</h1>
 
 			{/* Avatar + info */}
