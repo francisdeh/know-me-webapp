@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
 
-import { initializeApp } from "firebase-admin/app";
+import { cert, initializeApp } from "firebase-admin/app";
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 
 type Question = {
@@ -15,12 +15,7 @@ type Question = {
 const questions: Question[] = [
 	// Faith & Spirituality
 	{
-		text: "Which part of a church service do you enjoy or connect with the most and why?",
-		category: "faith",
-		depth: "light",
-	},
-	{
-		text: "How do you approach prayer — privately, together, or both?",
+		text: "Which part of church service do you enjoy or connect with the most and why?",
 		category: "faith",
 		depth: "light",
 	},
@@ -28,11 +23,6 @@ const questions: Question[] = [
 		text: "If you could ask God one question and get a direct answer, what would it be?",
 		category: "faith",
 		depth: "light",
-	},
-	{
-		text: "What does your faith look like in your daily life — not just on Sundays?",
-		category: "faith",
-		depth: "medium",
 	},
 	{
 		text: "How important is it that your partner shares your exact denomination or beliefs?",
@@ -60,9 +50,74 @@ const questions: Question[] = [
 		category: "faith",
 		depth: "deep",
 	},
+	{
+		text: "How important is it to you that your family attends the same church as you?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "Is there anything about your current church experience that you feel you could not give up?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "How much weight do you give a prophetic word spoken over you — would it influence a major life decision?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "If a prophet gave a word over our marriage or family, how would you want us to process that together?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "Could you see yourself being spiritually fulfilled in a church that is very different from your current one?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "How would you want us to handle having different home churches if we couldn't agree on one?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "What do you think the spiritual home of a family should look like — one church, one pastor, one community?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "How do you handle theological disagreements between you and your partner — do you see them as something to resolve or something to coexist with?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "What is one theological belief you hold that you think most people in your church may not fully understand or agree with?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "Is a wedding ring important to you — what does it mean to you symbolically?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "Does your church have any spoken or unspoken expectations about how women dress or present themselves? How do you personally relate to those expectations?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "How important is it to you that your partner is comfortable with how you dress and present yourself?",
+		category: "faith",
+		depth: "deep",
+	},
+	{
+		text: "How would you feel if your partner had a strong opinion about your jewellery, makeup, or hair choices?",
+		category: "faith",
+		depth: "deep",
+	},
 
 	// Family & Roots
-	{ text: "Describe your family growing up in three words.", category: "family", depth: "light" },
+	{ text: "Describe your family growing up in a sentence.", category: "family", depth: "light" },
 	{
 		text: "What is your relationship like with your siblings, if you have any?",
 		category: "family",
@@ -115,11 +170,20 @@ const questions: Question[] = [
 		category: "marriage",
 		depth: "light",
 	},
-	{ text: "Where in the world would you want to honeymoon?", category: "marriage", depth: "light" },
+	{
+		text: "Where in the world would you want to honeymoon? If that's even a thing you are considering.",
+		category: "marriage",
+		depth: "light",
+	},
 	{
 		text: "Would you prefer boys or girls, and what is your honest reason?",
 		category: "marriage",
 		depth: "light",
+	},
+	{
+		text: "Does age play a role in who you'd consider dating — would you date someone younger than you, older, or does it not factor in?",
+		category: "marriage",
+		depth: "medium",
 	},
 	{
 		text: "How many children do you want, if any? And at what pace?",
@@ -303,11 +367,6 @@ const questions: Question[] = [
 		category: "interests",
 		depth: "medium",
 	},
-	{
-		text: "How do you manage money — are you a saver, a spender, or an investor?",
-		category: "interests",
-		depth: "deep",
-	},
 
 	// Money & Finances
 	{
@@ -356,22 +415,12 @@ const questions: Question[] = [
 		depth: "medium",
 	},
 	{
-		text: "How do you feel about one partner earning significantly more than the other long term?",
-		category: "money",
-		depth: "medium",
-	},
-	{
 		text: "What does financial freedom mean to you practically — what does that life look like?",
 		category: "money",
 		depth: "medium",
 	},
 	{
 		text: "Do you currently have any debt — loans, credit cards, family obligations? How are you managing it?",
-		category: "money",
-		depth: "deep",
-	},
-	{
-		text: "Have you ever been in serious financial difficulty? What happened and what did you learn?",
 		category: "money",
 		depth: "deep",
 	},
@@ -433,17 +482,7 @@ const questions: Question[] = [
 		depth: "medium",
 	},
 	{
-		text: "How important is physical health to you as a value, not just a habit?",
-		category: "health",
-		depth: "medium",
-	},
-	{
 		text: "Do you think couples should work out together, or is that personal territory?",
-		category: "health",
-		depth: "medium",
-	},
-	{
-		text: "How do you feel about a partner who has very different energy levels or fitness habits than you?",
 		category: "health",
 		depth: "medium",
 	},
@@ -550,11 +589,6 @@ const questions: Question[] = [
 		depth: "medium",
 	},
 	{
-		text: "What is one thing that makes you feel genuinely understood by another person?",
-		category: "intimacy",
-		depth: "medium",
-	},
-	{
 		text: "How do you like to spend time with someone you are close to — active, social, quiet, creative?",
 		category: "intimacy",
 		depth: "medium",
@@ -565,27 +599,12 @@ const questions: Question[] = [
 		depth: "medium",
 	},
 	{
-		text: "Have you ever felt emotionally neglected in a relationship — what did that look like and how did you handle it?",
-		category: "intimacy",
-		depth: "deep",
-	},
-	{
 		text: "What is your communication style when there is tension — do you confront, withdraw, or process alone first?",
 		category: "intimacy",
 		depth: "deep",
 	},
 	{
 		text: "How do you repair after a disagreement — what does reconciliation look like for you?",
-		category: "intimacy",
-		depth: "deep",
-	},
-	{
-		text: "What is one thing you have needed in past relationships that you never quite knew how to ask for?",
-		category: "intimacy",
-		depth: "deep",
-	},
-	{
-		text: "How do you feel about vulnerability — is it something that comes naturally or something you have had to work at?",
 		category: "intimacy",
 		depth: "deep",
 	},
@@ -639,15 +658,25 @@ const questions: Question[] = [
 	{
 		text: "How do you think the world will end — scientifically, spiritually, or both?",
 		category: "world",
-		depth: "deep",
+		depth: "medium",
 	},
 	{
 		text: "If you had to make one case — just one — in defence of Lucifer, what would it be?",
 		category: "world",
-		depth: "deep",
+		depth: "light",
 	},
 
 	// Fun & Random
+	{
+		text: "Who are your top three comedians — and what is it about their style that gets you?",
+		category: "fun",
+		depth: "light",
+	},
+	{
+		text: "Are you currently reading anything — what is it and what pulled you to it?",
+		category: "fun",
+		depth: "light",
+	},
 	{
 		text: "What is a skill you have that would genuinely surprise people?",
 		category: "fun",
@@ -679,11 +708,6 @@ const questions: Question[] = [
 		depth: "light",
 	},
 	{
-		text: "What is your love language — and do you actually think it fits you?",
-		category: "fun",
-		depth: "medium",
-	},
-	{
 		text: "How do you feel about makeup — do you wear it, when, and why or why not?",
 		category: "fun",
 		depth: "medium",
@@ -697,11 +721,6 @@ const questions: Question[] = [
 		text: "What is one thing about yourself that takes people time to understand?",
 		category: "fun",
 		depth: "medium",
-	},
-	{
-		text: "Is there a version of yourself you performed for the world that is different from who you are privately?",
-		category: "fun",
-		depth: "deep",
 	},
 	{
 		text: "What is a question you wish someone would ask you that nobody ever does?",
@@ -721,7 +740,14 @@ async function seed() {
 		console.log(`→ Using production Firestore (project: ${projectId})`);
 	}
 
-	const app = initializeApp({ projectId });
+	const sa = process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT;
+	if (!useEmulator && !sa) {
+		console.error("FIREBASE_ADMIN_SERVICE_ACCOUNT is required when not using the emulator");
+		process.exit(1);
+	}
+	const app = useEmulator
+		? initializeApp({ projectId })
+		: initializeApp({ credential: cert(JSON.parse(sa as string)) });
 	const db = getFirestore(app);
 
 	console.log(`→ Seeding ${questions.length} questions…`);
